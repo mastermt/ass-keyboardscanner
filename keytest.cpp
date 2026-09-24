@@ -17,9 +17,11 @@
 static uint8_t previous_make[KEYTEST_KEY_COUNT];
 static uint8_t previous_break[KEYTEST_KEY_COUNT];
 static bool first_report = true;
+volatile bool diagnostic_midi_suppressed = false;
 
 void keytestSetup()
 {
+    diagnostic_midi_suppressed = true;
     for (uint8_t i = 0; i < KEYTEST_KEY_COUNT; ++i)
     {
         previous_make[i] = 0xFF;
