@@ -12,10 +12,10 @@
  * Select an instrument model by supplying MODEL_NAME in the build flags
  * or changing the default below once its model directory is imported.
  *
- * Example: -DMODEL_NAME=maudio_keystation88ii
+ * Example: -DMODEL_NAME=general_music_prp8
  */
 #ifndef MODEL_NAME
-#define MODEL_NAME maudio_keystation88ii
+#define MODEL_NAME general_music_prp8
 #endif
 
 #ifndef SERIAL_SPEED
