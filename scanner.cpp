@@ -3,15 +3,27 @@
  * Target: Arduino Mega 2560 / ATmega2560
  * SPDX-License-Identifier: GPL-3.0-or-later
  *
- * IMPORTANT:
- * This initial scaffold deliberately does not energize matrix pins until
- * a complete model pin map is present. The upstream project uses model
- * headers that expand PINS(output_pin, input_pin) entries. Import and verify
- * the selected model before enabling physical scanning.
+ * The diagnostic data below is kept separate from MIDI/state handling:
+ * scanner_make_state[] and scanner_break_state[] are the raw contact
+ * snapshots that the future optimized AVR scan routine will fill.
  */
 
 #include "globals.h"
 #include "scanner_avr.h"
+#include "scanner_debug.h"
+
+volatile uint8_t scanner_make_state[KEYS_NUMBER] = {0};
+volatile uint8_t scanner_break_state[KEYS_NUMBER] = {0};
+
+static volatile uint32_t scanner_scan_count = 0;
+
+uint32_t scannerGetScanCount(void)
+{
+    noInterrupts();
+    const uint32_t count = scanner_scan_count;
+    interrupts();
+    return count;
+}
 
 void scannerSetup()
 {
@@ -22,11 +34,10 @@ void scannerSetup()
 void scannerLoop()
 {
     /*
-     * Model-specific optimized scanner will be implemented here.
-     *
-     * ATmega2560 direct-register scan routines must be generated from the
-     * exact model matrix map. A generic hard-coded PORTA/B/C/etc sequence
-     * could short or misread a keybed wired differently, so no arbitrary
-     * port sequence is driven in this baseline.
+     * The model-specific AVR scan routine will update the raw MAKE/BREAK
+     * arrays here. Keep the scan counter at the end of this function:
+     * one increment represents one complete matrix scan.
      */
+
+    ++scanner_scan_count;
 }
