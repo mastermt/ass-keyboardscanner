@@ -8,12 +8,7 @@
 
 #include <Arduino.h>
 
-/*
- * Select an instrument model by supplying MODEL_NAME in the build flags
- * or changing the default below once its model directory is imported.
- *
- * Example: -DMODEL_NAME=general_music_prp8
- */
+/* Select the GeneralMusic pRP8 model by default. */
 #ifndef MODEL_NAME
 #define MODEL_NAME general_music_prp8
 #endif
@@ -26,10 +21,6 @@
 #define STR(x) STR_HELPER(x)
 #define MODEL_HEADER_PATH models/MODEL_NAME/model.h
 
-/*
- * Model header is intentionally included only after the model files have
- * been added. This keeps the source tree's model-based configuration pattern.
- */
 #if __has_include(STR(MODEL_HEADER_PATH))
 #include STR(MODEL_HEADER_PATH)
 #else
@@ -42,6 +33,8 @@
 void scannerSetup();
 void scannerLoop();
 void statesLoop();
+void analogControlsSetup();
+void analogControlsLoop();
 void sendKeyEvent(byte status_byte, byte key_index, unsigned long time);
 void sendSustainPedalEvent(boolean pressed);
 void sendMidiEvent(byte status_byte, byte data1, byte data2);
