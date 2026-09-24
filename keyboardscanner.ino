@@ -6,17 +6,22 @@
  * https://github.com/mastermt/keyboardscanner
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-
 #include "globals.h"
+#include "analog_controls.h"
 
 void setup()
 {
     Serial.begin(SERIAL_SPEED);
     scannerSetup();
+    analogControlsSetup();
 }
 
 void loop()
 {
+    // Keep matrix scan/state transitions first in the foreground loop.
     scannerLoop();
     statesLoop();
+
+    // Poll controls after keyboard processing; this function never waits.
+    analogControlsLoop();
 }
